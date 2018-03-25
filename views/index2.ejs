@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html ng-app="demoApp">
+  <head>
+    <title>Whisper Desktop Demo</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-resource.min.js"></script>
+
+    <!-- // <script src="/app.js"></script> -->
+
+    <style type="text/css">
+      body {
+        font-size: 12px;
+      }
+
+      .title {
+        font-size: 16px;
+        font-weight: 600;
+      }
+    </style>
+
+  </head>
+  <body>
+<!--   	<div>
+  		<h2>OkeyDokey Whisper Demo</h2>
+  		<br><br>
+      <div ng-controller="appController as appCtrl">
+    		<button ng-click="appCtrl.generateKey()" class="btn btn-info">Generate Key</button>
+
+		    Name: <input ng-model="firstname">
+		    <h1>{{firstname}}</h1>
+
+        <a href="" ng-click="appCtrl.demo()">demo</a>
+        <div>{{appCtrl.temp}}</div>
+      </div>
+  	</div> -->
+
+    <ng-view></ng-view>
+    <!-- <div ng-view></div> -->
+
+    
+    <!-- <div ng-controller="appController as appCtrl"> -->
+    <!-- </div> -->
+
+
+    <script type="text/ng-template" id="/index.html">
+      index page
+    
+      <button ng-click="generateKey()" class="btn btn-info">Generate Key</button>
+      {{temp}}
+    </script>
+
+
+
+		<script>
+			angular.module('demoApp', ['ngRoute'])
+
+        // controller
+
+				.controller('appController', ['$scope', function ($scope) {
+					// var app = this;
+
+          console.log("appController")
+
+          $scope.temp = "hiiii";
+
+					// app.firstName = [{text:'a'}, {text:'b'}];
+					// app.temp = "hello";
+
+					// app.generateKey = () => {
+					// 	console.log('hi');
+
+					//     shh.generateSymKeyFromPassword(password).then(id => {
+					//       resolve(id);
+					//     }).catch(err => reject(err));
+
+					// };
+
+					// app.demo = function() {
+					// 	console.log('demo')
+					// 	app.temp = "bye"
+					// }
+
+		  	}])
+
+        // routes
+
+        .config(['$routeProvider', function ($routeProvider) {
+          $routeProvider
+            .when('/', {
+              templateUrl: '/index.html',
+              controller: 'appController'
+            });
+        }]);
+
+		</script>
+
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+		  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+		  crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  </body>
+</html>
