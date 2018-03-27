@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
 
 	var context = {};
 
-	console.log(keys);
+	console.log('Keys:', keys);
 
 	context['keys'] = keys;
 
@@ -22,7 +22,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/generateKey', function(req, res, next) {
 
-	console.log(req.body.password)
+	console.log('Received passsword:', req.body.password)
 
 	var context = {};
 	context['keys'] = keys;
@@ -43,7 +43,7 @@ router.get('/publish', function(req, res, next) {
 	context['keys'] = keys;
 
 	whisper.publish(keys[0]).then(res => {
-		console.log(res);
+		console.log('Publish result:', res);
 
 	}).then(() => {
 		console.log("Post successful");
@@ -58,7 +58,7 @@ router.get('/subscribe', function(req, res, next) {
 	context['keys'] = keys;
 
 	whisper.subscribe(keys[0]).then(res => {
-		console.log(res);
+		console.log('Subscribe result:',res);
 
 	}).then(() => {
 		res.render('index', context);

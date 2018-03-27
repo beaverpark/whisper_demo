@@ -64,7 +64,7 @@ Whisper.prototype.generateKey = function(password) {
   var shh = this.web3.shh;
 
   return new Promise((resolve, reject) => {
-    console.log(password)
+    console.log('(whisper.js) Password:', password)
     // shh.newSymKey().then(id => {
     shh.generateSymKeyFromPassword(password).then(id => {
       resolve(id);
@@ -102,7 +102,7 @@ Whisper.prototype.addSymKey = function(symKey) {
 
   return new Promise((resolve, reject) => {
 
-    console.log(symKey)
+    console.log('(whisper.js) Symkey:', symKey)
     shh.addSymKey(symKey).then(res => {
       console.log(res);
       resolve(res);
@@ -120,7 +120,7 @@ Whisper.prototype.subscribe = function(symKey) {
 
   return new Promise((resolve, reject) => {
 
-    console.log(symKey)
+    console.log('(whisper.js) Symkey:',symKey)
     shh.subscribe('messages', {
       symKeyID: symKey, // encrypts using the sym key ID
       topics: [config.topic],
@@ -130,7 +130,7 @@ Whisper.prototype.subscribe = function(symKey) {
 
       else {
         console.log("subscription successful")
-        console.log(msg);
+        console.log('(whisper.js) Msg:',msg);
 
         resolve(msg);
       }
@@ -181,7 +181,7 @@ Whisper.prototype.publish = function(symKey) {
 
   return new Promise((resolve, reject) => {
 
-    console.log(symKey)
+    console.log('(whisper.js) Symkey:',symKey)
     shh.post({
       symKeyID: symKey, // encrypts using the sym key ID
       // sig: this.keyId, // signs the message using the keyPair ID
