@@ -11,7 +11,7 @@ function Whisper() {
 
   // this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 
-	this.web3 = new Web3(new Web3.providers.IpcProvider('/Users/ryanpark/Library/Ethereum/testnet/geth.ipc', net));
+	this.web3 = new Web3(new Web3.providers.IpcProvider('/home/seongmin/.ethereum/geth.ipc', net));
 	// this.web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/InJGUSbjUcfHGVFxTr91'));
   
   var shh = this.web3.shh;
@@ -30,7 +30,7 @@ function Whisper() {
   // .then(() => {
     // console.log(temp)
   // this.web3.shh.hasKeyPair('d5eef8c52458ee3f6631a5438e0d907186f5b6034aa0b14eca9c6539838d7df4').then(console.log)
-  // })
+  // }
 
 	this.web3.eth.getBlockNumber().then((res) => {
 	    console.log("block #: " + res);
@@ -90,6 +90,24 @@ Whisper.prototype.generateKey = function(password) {
   });
 }
 
+Whisper.prototype.addSymKey = function(symKey) {
+
+  var shh = this.web3.shh;
+
+  // return new Promise((resolve, reject) => {
+
+  return new Promise((resolve, reject) => {
+
+    console.log(symKey)
+    shh.addSymKey(symKey).then(res => {
+      console.log(res);
+      resolve(res);
+    }).catch(err => {
+      console.log
+    });
+  })
+}
+
 Whisper.prototype.subscribe = function(symKey) {
 
   var shh = this.web3.shh;
@@ -101,7 +119,8 @@ Whisper.prototype.subscribe = function(symKey) {
     console.log(symKey)
     shh.subscribe('messages', {
       symKeyID: symKey, // encrypts using the sym key ID
-      topics: ['0x33445566']
+      topics: ['0x33445566'],
+      ttl: 200
     }, (err, msg, subscription) => {
       if(err) reject(err);
 

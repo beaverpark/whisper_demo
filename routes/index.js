@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var whisper = require('../whisper')();
+var symkey = require('./keystore/symkey.json').key;
 
 var keys = [];
 var filterIds = [];
@@ -27,8 +28,10 @@ router.post('/generateKey', function(req, res, next) {
 	context['keys'] = keys;
 
 
-	whisper.generateKey(req.body.password).then(keyId => {
+	whisper.addSymKey(symkey).then(keyId => {
+		console.log("symkey Id: "  + keyId);
 		keys.push(keyId);
+
 	}).then(() => {
 		res.render('index', context);
 	});
