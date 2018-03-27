@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var whisper = require('../whisper')();
-var symkey = require('../keystore/symkey.json').key;
+var symkey = require('../keystore/symkey').key;
 
 var keys = [];
 var filterIds = [];

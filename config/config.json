@@ -1,0 +1,5 @@
+{
+	"isTestnet": true,
+	"dataDir": "/home/seongmin/.ethereum/geth.ipc",
+	"dataDirTestnet": "/home/seongmin/.ethereum/testnet/geth.ipc"
+}

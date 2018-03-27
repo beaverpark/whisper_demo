@@ -1,5 +1,6 @@
 'use strict';
 
+var config = require('./config/config');
 
 module.exports = function() {
 	return new Whisper();
@@ -11,7 +12,9 @@ function Whisper() {
 
   // this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 
-	this.web3 = new Web3(new Web3.providers.IpcProvider('/home/seongmin/.ethereum/testnet/geth.ipc', net));
+  var ipcEndpoint = config.isTestnet ? config.dataDirTestnet : dataDir;
+
+	this.web3 = new Web3(new Web3.providers.IpcProvider(ipcEndpoint, net));
 	// this.web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/InJGUSbjUcfHGVFxTr91'));
   
   var shh = this.web3.shh;
