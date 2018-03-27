@@ -11,7 +11,7 @@ function Whisper() {
 
   // this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 
-	this.web3 = new Web3(new Web3.providers.IpcProvider('/home/seongmin/.ethereum/geth.ipc', net));
+	this.web3 = new Web3(new Web3.providers.IpcProvider('/home/seongmin/.ethereum/testnet/geth.ipc', net));
 	// this.web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/InJGUSbjUcfHGVFxTr91'));
   
   var shh = this.web3.shh;
