@@ -27,8 +27,8 @@ router.post('/generateKey', function(req, res, next) {
 	var context = {};
 	context['keys'] = keys;
 
-
-	whisper.addSymKey(symkey).then(keyId => {
+	whisper.generateKey(req.body.password).then(keyId => {
+	// whisper.addSymKey(symkey).then(keyId => {
 		console.log("symkey Id: "  + keyId);
 		keys.push(keyId);
 

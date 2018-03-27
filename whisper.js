@@ -65,7 +65,8 @@ Whisper.prototype.generateKey = function(password) {
 
   return new Promise((resolve, reject) => {
     console.log(password)
-    shh.newSymKey().then(id => {
+    // shh.newSymKey().then(id => {
+    shh.generateSymKeyFromPassword(password).then(id => {
       resolve(id);
     }).catch(err => reject(err));
 
@@ -122,7 +123,7 @@ Whisper.prototype.subscribe = function(symKey) {
     console.log(symKey)
     shh.subscribe('messages', {
       symKeyID: symKey, // encrypts using the sym key ID
-      topics: ['0x33445566'],
+      topics: [config.topic],
       ttl: 200
     }, (err, msg, subscription) => {
       if(err) reject(err);
@@ -146,7 +147,7 @@ Whisper.prototype.makeMsgFilter = function(symKey) {
   return new Promise((resolve, reject) => {
     shh.newMessageFilter({
       symKeyID: symKey, // encrypts using the sym key ID
-      topics: ['0x33445566']
+      topics: [config.topic]
     }).then((filterId) => {
       console.log("filter id = " + filterId);
       resolve(filterId);
@@ -185,10 +186,10 @@ Whisper.prototype.publish = function(symKey) {
       symKeyID: symKey, // encrypts using the sym key ID
       // sig: this.keyId, // signs the message using the keyPair ID
       ttl: 20,
-      topic: '0x33445566',
+      topic: config.topic,
       payload: '0x6f6b6579646f6b6579', // write encode to hex fx & take in param
       powTime: 3,
-      powTarget: 0.5
+      powTarget: 3.0
     }).then((res) => {
       resolve(res);
     }).catch(err => reject(err));
