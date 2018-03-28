@@ -14,13 +14,16 @@ function Whisper() {
 
   var ipcEndpoint = config.isTestnet ? config.dataDirTestnet : dataDir;
 
-	this.web3 = new Web3(new Web3.providers.IpcProvider(ipcEndpoint, net));
-	// this.web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/InJGUSbjUcfHGVFxTr91'));
-  
-  var shh = this.web3.shh;
+	// this.web3 = new Web3(new Web3.providers.IpcProvider(ipcEndpoint, net));
+	this.web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/InJGUSbjUcfHGVFxTr91'));  
+  // console.log("==================== web3 current provider ====================")
+  // console.log(this.web3.currentProvider)
 
-  shh.getInfo().then(console.log)
+  this.web3.shh.setProvider(new Web3.providers.IpcProvider(ipcEndpoint, net));
+  // console.log("==================== shh current provider ====================")
+  // console.log(this.web3.shh.currentProvider)
 
+  // var shh = this.web3.shh;
 
 
   // var temp;
@@ -94,6 +97,26 @@ Whisper.prototype.generateKey = function(password) {
   });
 }
 
+
+Whisper.prototype.getSymKey = function(symKeyId) {
+
+  var shh = this.web3.shh;
+
+  // return new Promise((resolve, reject) => {
+
+  return new Promise((resolve, reject) => {
+
+    console.log('(whisper.js) SymkeyId:', symKeyId)
+    shh.getSymKey(symKeyId).then(res => {
+      console.log(res)
+      resolve(res);
+    }).catch(err => {
+      console.log(err)
+    });
+  })
+}
+
+
 Whisper.prototype.addSymKey = function(symKey) {
 
   var shh = this.web3.shh;
@@ -107,7 +130,7 @@ Whisper.prototype.addSymKey = function(symKey) {
       console.log(res);
       resolve(res);
     }).catch(err => {
-      console.log
+      console.log(err)
     });
   })
 }

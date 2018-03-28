@@ -4,6 +4,7 @@ var whisper = require('../whisper')();
 var symkey = require('../keystore/symkey').key;
 
 var keys = [];
+var rawKeys = [];
 var filterIds = [];
 
 
@@ -26,16 +27,23 @@ router.post('/generateKey', function(req, res, next) {
 
 	var context = {};
 	context['keys'] = keys;
+	context['rawKeys'] = rawKeys;
 
 	whisper.generateKey(req.body.password).then(keyId => {
 	// whisper.addSymKey(symkey).then(keyId => {
-		console.log("symkey Id: "  + keyId);
+		console.log("your symkey Id: "  + keyId);
 		keys.push(keyId);
-
 	}).then(() => {
-		res.render('index', context);
+		whisper.getSymKey(keys[0]).then(key => {
+			console.log("your raw symKey: " + key);
+			rawKeys.push(key);
+		}).then(() => {
+			
+			res.render('index', context);
+		})
 	});
 });
+
 
 router.get('/publish', function(req, res, next) {
 
