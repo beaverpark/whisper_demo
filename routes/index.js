@@ -16,6 +16,7 @@ router.get('/', function(req, res, next) {
 	console.log('Keys:', keys);
 
 	context['keys'] = keys;
+	context['rawKeys'] = rawKeys;
 
   res.render('index', context);
 });
@@ -49,6 +50,8 @@ router.get('/publish', function(req, res, next) {
 
 	var context = {};
 	context['keys'] = keys;
+	context['rawKeys'] = rawKeys;
+
 
 	whisper.publish(keys[0]).then(res => {
 		console.log('Publish result:', res);
@@ -64,6 +67,8 @@ router.get('/subscribe', function(req, res, next) {
 
 	var context = {};
 	context['keys'] = keys;
+	context['rawKeys'] = rawKeys;
+
 
 	whisper.subscribe(keys[0]).then(res => {
 		console.log('Subscribe result:',res);
@@ -79,6 +84,8 @@ router.get('/makeMsgFilter', function(req, res, next) {
 
 	var context = {};
 	context['keys'] = keys;
+	context['rawKeys'] = rawKeys;
+
 
 	whisper.makeMsgFilter(keys[0]).then(filterId => {
 		filterIds.push(filterId); 
@@ -92,6 +99,7 @@ router.get('/useMsgFilter', function(req, res, next) {
 
 	var context = {};
 	context['keys'] = keys;
+	context['rawKeys'] = rawKeys;
 
 	whisper.useMsgFilter(filterIds[0]);
 
