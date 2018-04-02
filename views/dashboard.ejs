@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Whisper Desktop Demo</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+    <style type="text/css">
+   
+	   html {
+	   	/*padding-left:200px;*/
+	   }
+
+
+      body {
+        font-size: 16px;
+      }
+
+
+
+	.sidenav {
+	    height: 100%; /* 100% Full-height */
+	    width: 200px; /* 0 width - change this with JavaScript */
+	    position: fixed; /* Stay in place */
+	    /*z-index: 1;  Stay on top */
+	    top: 66px; /* Stay at the top */
+	    left: 0;
+	    /*background-color: #111; /* Black*/
+	    overflow-x: hidden; /* Disable horizontal scroll */
+	    padding-top: 60px; /* Place content 60px from the top */
+	    /*transition: 0.5s;  0.5 second transition effect to slide in the sidenav */
+	    border-right: 1px solid lightgray;
+	}
+
+	/* The navigation menu links */
+	.sidenav a {
+	    padding: 8px 8px 8px 32px;
+	    text-decoration: none;
+	    font-size: 25px;
+	    /*color: #818181;*/
+	    display: block;
+	    transition: 0.3s;
+	}
+
+	.main {
+		padding-left: 200px;
+	}
+
+	.item {
+		margin: 20px;
+		padding: 20px;
+		border: 1px solid lightgray;
+		height: 250px;
+	}
+
+	.item .btn {
+		margin: 20px 0;
+	}
+
+
+    </style>
+
+ 	</head>
+  <body>
+
+
+<nav class="navbar navbar-light bg-green">
+  <img src="/images/logo_3.png" style="height:50px">
+</nav>
+
+	<div id="mySidenav" class="sidenav">
+	  <a href="#">Doorlock</a>
+	  <a href="#">Wallet</a>
+	</div>
+
+	<div class="main">
+		<br><br>
+		<div class="item d-flex">
+			<div>
+				<img src="/images/Smart-Door-Lock.jpg" style="height:100%; width: 220px">
+			</div>
+			<div style="padding-left:30px">
+<!-- 				<h4>Doorlock</h4>
+				<div>Address: 0x12345678901234567890</div>
+				<div>USD: $50</div>
+				<div>ETH: 0.12536</div> -->
+				<div>Host: <%- houseInfo.host -%></div>				
+				<div>Rate/hr: <%- houseInfo.hourlyRate -%></div>
+				<div>Rate/day: <%- houseInfo.dailyRate -%></div>
+				<!-- <div>Utility Fee: <%- houseInfo.utilityFee -%></div> -->
+				<!-- <div>Cleaning Fee: <%- houseInfo.cleaningFee -%></div> -->
+
+				<a href="#" id="rent" class="btn bg-green txt-white">Rent It</a>
+				<a href="#" id="open" class="btn bg-blue txt-white" style="display:none">Open</a>
+			</div>
+		</div>
+
+
+	</div>
+<!-- 
+	 	  <form action="/generateKey" method="post">
+	      <div class="form-group">
+			    <label for="password">Enter a password to generate a key</label>
+			    <input type="text" class="form-control" id="password" name="password" placeholder="Enter password">
+				</div>
+				<button type="submit" class="btn btn-info">Generate Key</button>
+			</form> -->
+
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+		  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+		  crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+			<script type="text/javascript">
+			$(function() {
+
+				$("#rent").click(() => {
+					$.ajax({
+						type:'POST',
+						data: JSON.stringify("dummy"),
+						// contentType: 'application/json',
+						url: 'http://localhost:3000/rent',
+						success: function(data) {
+							console.log('Reservation Id: ' + data);
+
+							$('#open').show();
+							$('#rent').hide();
+						},
+						error: () => {
+							console.log("ajax err");
+						}
+					});
+				});
+
+				$("#open").click(() => {
+					$.ajax({
+						type:'POST',
+						data: JSON.stringify("dummy"),
+						// contentType: 'application/json',
+						url: 'http://localhost:3000/open',
+						success: function(data) {
+							// console.log('Reservation Id: ' + data);
+							
+
+							// $('#open').show();
+							// $('#rent').hide();
+						},
+						error: () => {
+							console.log("ajax err");
+						}
+					});
+				});
+
+			});
+
+			// $.ajax({
+	  //     					type: 'POST',
+	  //     					data: JSON.stringify(data),
+	  //     					contentType : 'application/json',
+	  //     					url: 'http://localhost:3000/admin/updateTable',
+	  //     					success: function() {
+	  //     						console.log('update success');
+	  //     					},
+	  //     					error: function(err) {
+	  //     						console.log("ajax error")
+
+	  //     						// var snackbarContainer = document.querySelector('#admin_toast');
+	  //     						// var data = {message: '입력 포맷이 잘못되었습니다. 다시 시도해 주세요.'}
+   //    						 //    snackbarContainer.MaterialSnackbar.showSnackbar(data);
+	  //     						alert("입력 포맷이 잘못되었습니다. 다른 예시들을 참고해주세요.\n날짜면 0000-00-00, true/false는 그대로 true 혹은 false를 입력해주시기 바랍니다.");
+	  //     						location.reload();
+	  //     					}
+	  //     				});
+
+
+			</script>
+
+
+  </body>
+</html>
