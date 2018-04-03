@@ -7,20 +7,19 @@ var keys = [];
 var rawKeys = [];
 var filterIds = [];
 
-// var config = require('../config/config');
-// var Web3 = require('web3');
-// var net = require('net');
 
-// var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+// Web3 Initialize
+// const ethClient = 'http://localhost:8546';
+// const bzzClient = 'http://swarm-gateways.net';
 
-// var ipcEndpoint = config.isTestnet ? config.dataDirTestnet : dataDir;
+// let Web3 = require('web3');
+// let net = require('net');
 
-// this.web3 = new Web3(new Web3.providers.IpcProvider(ipcEndpoint, net));
-// var web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/InJGUSbjUcfHGVFxTr91'));  
-// console.log("==================== web3 current provider ====================")
-// console.log(this.web3.currentProvider)
+// web3 = new Web3(new Web3.providers.HttpProvider(ethClient));
+// web3.bzz.setProvider(bzzClient);
 
-// web3.shh.setProvider(new Web3.providers.IpcProvider(ipcEndpoint, net));
+// web3.shh.setProvider(new Web3.providers.IpcProvider("/Users/ryanpark/Documents/okdk-whisper/datadir/geth.ipc", net));
+
 
 
 // OKDK js 
@@ -68,10 +67,8 @@ router.get('/', async (req, res, next) => {
 // AJAX POST rent lock
 router.post('/rent', async (req, res) => {
 
-	// data form: {"new_val":" ab@gmail.comw","id":"user_1_email"}
-	var data = JSON.parse(JSON.stringify(req.body));
-
-	console.log(data)
+	// var data = JSON.parse(JSON.stringify(req.body));
+	// console.log(data.password)
 
   /* Test reservation */
   var checkInDate = new Date();
@@ -107,7 +104,7 @@ router.post('/open', async (req, res) => {
 	var topic = "0x12345678";
 	var message = "0x45454564574745745745745745745747";
 
-	const success = await okdk.whisper.post(topic, null, message);
+	const success = await okdk.whisper.post(topic, data.symKeyId, message);
 
 	console.log(success);
 
@@ -129,34 +126,22 @@ router.post('/open', async (req, res) => {
 	// 		res.status(200).json("success");
 	// 	}
 	// });
-
 });
 
 
+router.post('/generateKey', async (req, res) => {
 
+	var data = JSON.parse(JSON.stringify(req.body));
 
-// router.post('/generateKey', function(req, res, next) {
+	console.log(data)
 
-// 	console.log('Received passsword:', req.body.password)
+	const symKeyId = await okdk.whisper.generateKey(data.password);
 
-// 	var context = {};
-// 	context['keys'] = keys;
-// 	context['rawKeys'] = rawKeys;
+	console.log(symKeyId);
 
-// 	whisper.generateKey(req.body.password).then(keyId => {
-// 	// whisper.addSymKey(symkey).then(keyId => {
-// 		console.log("your symkey Id: "  + keyId);
-// 		keys.push(keyId);
-// 	}).then(() => {
-// 		whisper.getSymKey(keys[0]).then(key => {
-// 			console.log("your raw symKey: " + key);
-// 			rawKeys.push(key);
-// 		}).then(() => {
-			
-// 			res.render('index', context);
-// 		})
-// 	});
-// });
+	res.status(200).json(symKeyId);
+
+});
 
 
 // router.get('/publish', function(req, res, next) {
