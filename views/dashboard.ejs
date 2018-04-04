@@ -75,6 +75,7 @@
 
 	<div class="main">
 		<br><br>
+		<h5>Desktop Side</h5>
 		<div class="item d-flex">
 			<div>
 				<img src="/images/Smart-Door-Lock.jpg" style="width: 220px">
@@ -90,18 +91,45 @@
 				<!-- <div>Utility Fee: <%- houseInfo.utilityFee -%></div> -->
 				<!-- <div>Cleaning Fee: <%- houseInfo.cleaningFee -%></div> -->
 
-				<a href="#" id="rent" class="btn bg-green txt-white">Rent It</a>
+				<a href="javascript:void(0);" id="rent" class="btn bg-green txt-white">Rent It</a>
 
 				<div id="btn-section" style="padding-top: 40px">
-		      <div class="form-group" style="display:none">
+		      <div id="pw-form-group" class="form-group" style="display:none">
 				    <label for="password">Enter a password to generate a key</label>
 				    <input type="text" class="form-control" id="password" name="password" placeholder="Enter password">
-						<a href="#" id="generateKey" class="btn bg-green txt-white">Generate Key with Password</a>
+						<a href="javascript:void(0);" id="generateKey" class="btn bg-green txt-white">Generate Key with Password</a>
 					</div>
-					<a href="#" id="open" class="btn bg-blue txt-white" style="display:none">Open</a>
+					<a href="javascript:void(0);" id="open" class="btn bg-blue txt-white" style="display:none">Open</a>
 				</div>
 			</div>
 		</div>
+
+		<h5>DoorLock Side</h5>
+		<div class="item d-flex">
+			<div>
+				<img src="/images/Smart-Door-Lock.jpg" style="width: 220px">
+			</div>
+			<div style="padding-left:30px">
+<!-- 				<h4>Doorlock</h4>
+				<div>Address: 0x12345678901234567890</div>
+				<div>USD: $50</div>
+				<div>ETH: 0.12536</div> -->
+				<div>Host: <%- houseInfo.host -%></div>
+				<div>Rate/hr: <%- houseInfo.hourlyRate -%></div>
+				<div>Rate/day: <%- houseInfo.dailyRate -%></div>
+
+
+				<div id="dl-btn-section" style="padding-top: 40px">
+		      <div id="dl-pw-form-group" class="form-group">
+				    <label for="dl-password">Enter a password to generate a key</label>
+				    <input type="text" class="form-control" id="dl-password" name="password" placeholder="Enter password provided by your host">
+						<a href="javascript:void(0);" id="dl-generateKey" class="btn bg-green txt-white">Generate Key</a>
+					</div>
+					<a href="javascript:void(0);" id="dl-subscribe" class="btn bg-blue txt-white" style="display:none">Subscribe</a>
+				</div>
+			</div>
+		</div>
+
 	</div>
 <!-- 
 	 	  <form action="/generateKey" method="post">
@@ -121,20 +149,19 @@
 
 			<script type="text/javascript">
 			$(function() {
-					var data = {};
-					// data.password = "1234";
-					// data.dummy = "hi";
+
+				// Desktop side
 
 				$("#rent").click(() => {
 					$.ajax({
 						type:'POST',
-						data: data,
+						data: null,
 						// contentType: 'application/json',
 						url: 'http://localhost:3000/rent',
 						success: (data) => {
 							console.log('ajax rent success. Reservation Id: ' + data);
 
-							$('.form-group').show();
+							$('#pw-form-group').show();
 							$('#rent').hide();
 						},
 						error: () => {
@@ -160,7 +187,7 @@
 
 							$('#open').before(keyDiv);
 						
-							$('.form-group').hide();
+							$('#pw-form-group').hide();
 							$('#open').show();
 
 						},
@@ -179,7 +206,7 @@
 						data: data,
 						// contentType: 'application/json',
 						url: 'http://localhost:3000/open',
-						success: function(data) {
+						success: (data) => {
 							// console.log('Reservation Id: ' + data);
 							console.log("ajax whisper post success: " + data)
 
@@ -194,24 +221,56 @@
 
 			});
 
-			// $.ajax({
-	  //     					type: 'POST',
-	  //     					data: JSON.stringify(data),
-	  //     					contentType : 'application/json',
-	  //     					url: 'http://localhost:3000/admin/updateTable',
-	  //     					success: function() {
-	  //     						console.log('update success');
-	  //     					},
-	  //     					error: function(err) {
-	  //     						console.log("ajax error")
+	
+			// Doorlock side
 
-	  //     						// var snackbarContainer = document.querySelector('#admin_toast');
-	  //     						// var data = {message: '입력 포맷이 잘못되었습니다. 다시 시도해 주세요.'}
-   //    						 //    snackbarContainer.MaterialSnackbar.showSnackbar(data);
-	  //     						alert("입력 포맷이 잘못되었습니다. 다른 예시들을 참고해주세요.\n날짜면 0000-00-00, true/false는 그대로 true 혹은 false를 입력해주시기 바랍니다.");
-	  //     						location.reload();
-	  //     					}
-	  //     				});
+			$("#dl-generateKey").click(() => {
+				var data = {};
+				data.password = $('input#dl-password').val();
+
+				$.ajax({
+					type:'POST',
+					data: data,
+					// contentType: 'application/json',
+					url: 'http://localhost:3000/generateKey',
+					success: (symKeyId) => {
+						// console.log('Reservation Id: ' + data);
+						console.log("ajax generate key success: " + symKeyId)
+
+						const keyDiv = "<div>Your Sym Key Id: <span id='dl-symKeyId' class='txt-blue'>" + symKeyId + "</span></div>";
+
+						$('#dl-subscribe').before(keyDiv);
+					
+						$('#dl-pw-form-group').hide();
+						$('#dl-subscribe').show();
+
+					},
+					error: () => {
+						console.log("ajax generate key err");
+					}
+				});
+			});
+
+			$("#dl-subscribe").click(() => {
+				var data = {};
+				data.symKeyId = $('#dl-symKeyId').text();
+
+				$.ajax({
+					type:'POST',
+					data: data,
+					// contentType: 'application/json',
+					url: 'http://localhost:3000/subscribe',
+					success: (data) => {
+						// console.log('Reservation Id: ' + data);
+						console.log("ajax subscribe success: " + data)
+						
+					},
+					error: () => {
+						console.log("ajax subscribe err");
+					}
+				});
+			});
+
 
 
 			</script>

@@ -53,12 +53,10 @@ router.get('/', async (req, res, next) => {
 	  context['houseInfo'] = houseInfo;
   }
 
-
 	context['keys'] = keys;
 	context['rawKeys'] = rawKeys;
 
   // res.render('index', context);
-
   res.render('dashboard', context);
 
 });
@@ -66,9 +64,6 @@ router.get('/', async (req, res, next) => {
 
 // AJAX POST rent lock
 router.post('/rent', async (req, res) => {
-
-	// var data = JSON.parse(JSON.stringify(req.body));
-	// console.log(data.password)
 
   /* Test reservation */
   var checkInDate = new Date();
@@ -91,44 +86,7 @@ router.post('/rent', async (req, res) => {
 
 });
 
-
-// AJAX POST open lock
-router.post('/open', async (req, res) => {
-
-	// data form: {"new_val":" ab@gmail.comw","id":"user_1_email"}
-	var data = JSON.parse(JSON.stringify(req.body));
-
-	console.log(data)
-
-
-	var topic = "0x12345678";
-	var message = "0x45454564574745745745745745745747";
-
-	const success = await okdk.whisper.post(topic, data.symKeyId, message);
-
-	console.log(success);
-
-	if(success) {
-		res.status(200).json("Whisper Post Success");
-	}
-	else {
-		res.status(400).json("Whisper Post Error");
-	}
-
-	// updateCol(table, id, col, new_val, function(err, rows) {
-	// 	if(err) {
-	// 		console.log("update err: " + err) 
-	// 		res.status(400).json(err);
-	// 	}
-
-	// 	else {
-	// 		console.log("update success");
-	// 		res.status(200).json("success");
-	// 	}
-	// });
-});
-
-
+// AJAX POST generate symmetric key
 router.post('/generateKey', async (req, res) => {
 
 	var data = JSON.parse(JSON.stringify(req.body));
@@ -140,8 +98,54 @@ router.post('/generateKey', async (req, res) => {
 	console.log(symKeyId);
 
 	res.status(200).json(symKeyId);
-
 });
+
+
+// AJAX POST open lock (post whisper message)
+router.post('/open', async (req, res) => {
+
+	var data = JSON.parse(JSON.stringify(req.body));
+
+	// console.log(data)
+
+	var topic = "0x12345678";
+	var message = "open";
+	var hex_message = okdk.utils.stringToHex(message);
+	// console.log("hex message: " + hex_message)
+
+	const success = await okdk.whisper.post(topic, data.symKeyId, hex_message);
+
+	// console.log(success);
+
+	if(success) {
+		console.log("============== Whisper POST Success =============");
+		res.status(200).json("Whisper Post Success");
+	}
+	else {
+		console.log("============== Whisper POST Error =============");
+		res.status(400).json("Whisper Post Error");
+	}
+});
+
+
+// AJAX POST subscribe to whisper message
+router.post('/subscribe', (req, res) => {
+
+	var data = JSON.parse(JSON.stringify(req.body));
+
+	console.log("Subscription")
+
+	var topics = ['0x12345678'];
+	const success = okdk.whisper.subscribe(topics, data.symKeyId, (msg, sub) => {
+		console.log("============== Whisper Subscribe Success =============");
+
+		// Doorlock specific code goes here
+
+	}, (err, sub) => {
+		console.log("============== Whisper Subscribe Error =============");
+	});
+});
+
 
 
 // router.get('/publish', function(req, res, next) {
