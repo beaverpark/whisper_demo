@@ -3,10 +3,12 @@ var router = express.Router();
 // var whisper = require('../whisper')();
 var symkey = require('../keystore/symkey').key;
 
-var keys = [];
-var rawKeys = [];
-var filterIds = [];
-
+// var keys = [];
+// var rawKeys = [];
+// var filterIds = [];
+var reservation_code = null;
+var reseration_id = null;
+var symKeyId = null;
 
 // Web3 Initialize
 // const ethClient = 'http://localhost:8546';
@@ -26,6 +28,10 @@ var filterIds = [];
 var OKDK = require('../../okdkjs/index.js');
 var okdk = OKDK();
 
+// DEMO: subscription happens from the beginning
+// for real, after getting event from the reservation contract, subscription should happen
+var pi_whisper = require('../pi_whisper')(okdk); 
+
 
 function main() {
   okdk.init().then(() => {
@@ -35,7 +41,6 @@ function main() {
     console.log(error);
   });
 }
-
 main();
 
 
@@ -44,26 +49,34 @@ router.get('/', async (req, res, next) => {
 
 	var context = {};
 
-  const houseInfo = await okdk.houses.getHouseInfo(1);
+	var user = await okdk.accounts[0];
+	console.log(user)
 
-  if(houseInfo == null) {
-  	console.log("House Info Not Available!!!!");
-  }
-  else {
-	  context['houseInfo'] = houseInfo;
-  }
 
-	context['keys'] = keys;
-	context['rawKeys'] = rawKeys;
+  context['houseInfo'] = await okdk.houses.getHouseInfo(1);
+  context['user'] = await okdk.accounts[0];
 
-  // res.render('index', context);
+  // DEMO: for now, manually set token balance to show reasonable amt
+  // context['token_balance'] = await okdk.token.getBalance(okdk.accounts[0]);
+  context['token_balance'] = '11640';
+  context['balance_after'] = 11640 - context.houseInfo.dailyRate;
+
+	// 30key = $1 
+  var key_1usd = 30;
+
+	// context['keys'] = keys;
+	// context['rawKeys'] = rawKeys;
+
+	console.log(context);
+
   res.render('dashboard', context);
-
 });
 
 
 // AJAX POST rent lock
 router.post('/rent', async (req, res) => {
+
+	var context = {};
 
   /* Test reservation */
   var checkInDate = new Date();
@@ -74,11 +87,24 @@ router.post('/rent', async (req, res) => {
   var checkOut = parseInt(checkOutDate.getTime() / 1000);
 
 	const reservationId = await okdk.reservations.reserve(okdk.accounts[0], 1, checkIn, checkOut);
+	reservation_id = reservationId;
 
-	console.log(reservationId)
+	// get reservation code
+	const reservationInfo = await okdk.reservations.getReservationInfo(reservationId);
+	reservation_code = reservationInfo.reservationCode;
+
+	// console.log("reservation code: " + reservation_code)
+
+	// make symKey using reservation Id
+	// const symKeyId = await okdk.whisper.generateKey(reservationId);
+
+	// DEMO: generate key from pw 1234
+	symKeyId = await okdk.whisper.generateKey('1234');
+
+	console.log(symKeyId);
 
 	if(reservationId > 0) {
-		res.status(200).json(reservationId);
+		res.status(200).json("Your reservation has been confirmed.");
 	}
 	else {
 		res.status(400).json("Error");
@@ -87,33 +113,29 @@ router.post('/rent', async (req, res) => {
 });
 
 // AJAX POST generate symmetric key
-router.post('/generateKey', async (req, res) => {
+// router.post('/generateKey', async (req, res) => {
 
-	var data = JSON.parse(JSON.stringify(req.body));
+// 	// make symKey using reservation Id
+// 	const symKeyId = await okdk.whisper.generateKey(reservationId);
 
-	console.log(data)
+// 	console.log(symKeyId);
 
-	const symKeyId = await okdk.whisper.generateKey(data.password);
-
-	console.log(symKeyId);
-
-	res.status(200).json(symKeyId);
-});
+// 	res.status(200).json(symKeyId);
+// });
 
 
 // AJAX POST open lock (post whisper message)
 router.post('/open', async (req, res) => {
 
-	var data = JSON.parse(JSON.stringify(req.body));
-
+	// var data = JSON.parse(JSON.stringify(req.body));
 	// console.log(data)
 
-	var topic = "0x12345678";
-	var message = "open";
-	var hex_message = okdk.utils.stringToHex(message);
-	// console.log("hex message: " + hex_message)
+	var topic = "0x15151515";
 
-	const success = await okdk.whisper.post(topic, data.symKeyId, hex_message);
+	// DEMO: should have guest addr to the msg as well 
+	var hex_message = okdk.utils.stringToHex("open");
+
+	const success = await okdk.whisper.post(topic, symKeyId, hex_message);
 
 	// console.log(success);
 
@@ -128,23 +150,59 @@ router.post('/open', async (req, res) => {
 });
 
 
-// AJAX POST subscribe to whisper message
-router.post('/subscribe', (req, res) => {
+// AJAX POST open lock (post whisper message)
+router.post('/close', async (req, res) => {
 
-	var data = JSON.parse(JSON.stringify(req.body));
+	// var data = JSON.parse(JSON.stringify(req.body));
+	// console.log(data)
 
-	console.log("Subscription")
+	var topic = "0x15151515";
 
-	var topics = ['0x12345678'];
-	const success = okdk.whisper.subscribe(topics, data.symKeyId, (msg, sub) => {
-		console.log("============== Whisper Subscribe Success =============");
+	// DEMO: should have guest addr to the msg as well 
+	var hex_message = okdk.utils.stringToHex("close");
 
-		// Doorlock specific code goes here
+	const success = await okdk.whisper.post(topic, symKeyId, hex_message);
 
-	}, (err, sub) => {
-		console.log("============== Whisper Subscribe Error =============");
-	});
+	// console.log(success);
+
+	if(success) {
+		console.log("============== Whisper POST Success =============");
+		res.status(200).json("Whisper Post Success");
+	}
+	else {
+		console.log("============== Whisper POST Error =============");
+		res.status(400).json("Whisper Post Error");
+	}
 });
+
+
+
+
+// // AJAX POST subscribe to whisper message
+// router.post('/subscribe', (req, res) => {
+
+// 	var data = JSON.parse(JSON.stringify(req.body));
+
+// 	console.log("Subscription")
+
+// 	var topics = ['0x15151515'];
+// 	const success = okdk.whisper.subscribe(topics, data.symKeyId, async (msg, sub) => {
+// 		console.log("============== Whisper Subscribe Success =============");
+
+// 		// check device status
+// 	  const verifyGuestResult = await okdk.devices.verifyGuest(okdk.accounts[1], okdk.accounts[0]._address);
+// 	  if (verifyGuestResult) {
+// 	    console.log("Guest authorization test passed");
+// 			// Doorlock specific code goes here
+
+// 	  } else {
+// 	    console.log('\n- Guest authorization test failed!');
+// 	  }
+
+// 	}, (err, sub) => {
+// 		console.log("============== Whisper Subscribe Error =============");
+// 	});
+// });
 
 
 

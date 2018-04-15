@@ -7,14 +7,6 @@
   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel='stylesheet' href='/stylesheets/style.css' />
-
-    <style type="text/css">
-
-		html {
-			/*padding-left:200px;*/
-		}
-
-    </style>
  	</head>
 
   <body class="bg-grey">
@@ -26,74 +18,30 @@
 
 		<div class="house_listing">
 
-			<% for(var i = 0; i < 1; i++) { %>
-			<div class="card" id="card1">
+			<div class="card" id="card2">
 				<div class="row card_content">
 					<div class="col-sm-5 img"></div>
 					<div class="col-sm-7">
 						<div class="txt_section">
 					    <h5 class="card-title">Demo House 1</h5>
+					    <div class="txt_item" id='reservation_code_item'>
+								<div class="title txt-blue">Your Reservation Code</div>
+								<div id="reservation_code" class="txt-blue">aa2ew1dazcxv</div>
+							</div>
 					    <div class="txt_item">
 								<div class="title">Host</div>
 								<div><%- houseInfo.host -%></div>				
 							</div>
 					    <div class="txt_item">
-								<div class="title">Rate/hr</div>
-								<div><%- houseInfo.hourlyRate -%> KEY</div>
+								<div class="title">House Address</div>
+								<div> 4716 Ellsworth Ave, Pittsburgh, PA, 15213</div>
 							</div>
 					    <div class="txt_item">
 								<div class="title">Rate/day </div>
 								<div><%- houseInfo.dailyRate -%> KEY</div>
 							</div>
-							<div class="row">
-								<div class="col">
-						    <div class="txt_item">
-									<div class="title txt-red">Your Balance</div>
-									<div class="txt-red"><%- token_balance -%> KEY</div>
-								</div>
-								</div>
-								<div class="col">
-							    <div class="txt_item">
-										<div class="title txt-red">Balance After</div>
-										<div class="txt-red"><%- balance_after -%> KEY</div>
-									</div>
-								</div>
-							</div>
-							<div style="display:flex; margin-top:20px">
-						    <button id="rent" class="btn btn-okdk bg-green txt-white">RENT</button>
-								<div id='loader' class='loader' style=""></div>
-								<div class='loader' style="font-size:14px;padding:0 8px">Ethereum is confirming the transaction.</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<% } %>
 
-      <div class="alert alert-rent bg-green txt-white" style="display:none" role="alert">
-        <div style="font-size:16px" class="rent_msg"></div>
-      </div>
-
-
-			<div class="card" id="card2" style="display:none">
-				<div class="row card_content">
-					<div class="col-sm-5 img"></div>
-					<div class="col-sm-7">
-						<div class="txt_section">
-					    <h5 class="card-title">Demo House 1</h5>
-<!-- 							<div class="row">
-								<div class="col"><img src="/images/Smart-Door-Lock.jpg" style="width:100%"></div>
-								<div class="col"> -->
-							    <div class="txt_item">
-										<div class="title">Device</div>
-										<div>Front Door Lock</div>				
-									</div>
-<!-- 								</div>
-							</div> -->
-							<div class='buttons' style="margin-top:30px">
-						    <button id="open" class="btn btn-okdk bg-blue txt-white">OPEN</button>
-						    <button id="close" class="btn btn-okdk bg-blue txt-white">CLOSE</button>
-							</div>
+					    <button id="rent" class="btn btn-okdk bg-green txt-white">OPEN</button>
 						</div>
 					</div>
 				</div>
@@ -187,8 +135,7 @@
 
 
 			<script type="text/javascript">
-			// $(function() {
-			// });
+			$(function() {
 
 				// Desktop side
 
@@ -199,12 +146,8 @@
 						// contentType: 'application/json',
 						url: 'http://localhost:3000/rent',
 						success: (data) => {
-							$('.loader').show();
+							console.log(data);
 
-							setTimeout(function() {
-								$('#card1').hide();
-								$('#card2').show();
-							}, 1000);
 						},
 						error: () => {
 							console.log("ajax rent err");
@@ -241,7 +184,7 @@
 
 				$("#open").click(() => {
 					var data = {};
-					// data.symKeyId = $('#symKeyId').text();
+					data.symKeyId = $('#symKeyId').text();
 
 					$.ajax({
 						type:'POST',
@@ -250,87 +193,68 @@
 						url: 'http://localhost:3000/open',
 						success: (data) => {
 							// console.log('Reservation Id: ' + data);
-							console.log("whisper post 'open' success: " + data)
+							console.log("ajax whisper post success: " + data)
+
 							// $('#open').show();
 							// $('#rent').hide();
 						},
 						error: () => {
-							console.log("whisper post 'open' err");
+							console.log("ajax whisper post err");
 						}
 					});
 				});
 
-
-				$("#close").click(() => {
-					var data = {};
-					// data.symKeyId = $('#symKeyId').text();
-
-					$.ajax({
-						type:'POST',
-						data: data,
-						// contentType: 'application/json',
-						url: 'http://localhost:3000/close',
-						success: (data) => {
-							// console.log('Reservation Id: ' + data);
-							console.log("whisper post 'close' success: " + data)
-							// $('#open').show();
-							// $('#rent').hide();
-						},
-						error: () => {
-							console.log("whisper post 'close' err");
-						}
-					});
-				});
+			});
 
 	
 			// Doorlock side
 
-			// $("#dl-generateKey").click(() => {
-			// 	var data = {};
-			// 	data.password = $('input#dl-password').val();
+			$("#dl-generateKey").click(() => {
+				var data = {};
+				data.password = $('input#dl-password').val();
 
-			// 	$.ajax({
-			// 		type:'POST',
-			// 		data: data,
-			// 		// contentType: 'application/json',
-			// 		url: 'http://localhost:3000/generateKey',
-			// 		success: (symKeyId) => {
-			// 			// console.log('Reservation Id: ' + data);
-			// 			console.log("ajax generate key success: " + symKeyId)
+				$.ajax({
+					type:'POST',
+					data: data,
+					// contentType: 'application/json',
+					url: 'http://localhost:3000/generateKey',
+					success: (symKeyId) => {
+						// console.log('Reservation Id: ' + data);
+						console.log("ajax generate key success: " + symKeyId)
 
-			// 			const keyDiv = "<div>Your Sym Key Id: <span id='dl-symKeyId' class='txt-blue'>" + symKeyId + "</span></div>";
+						const keyDiv = "<div>Your Sym Key Id: <span id='dl-symKeyId' class='txt-blue'>" + symKeyId + "</span></div>";
 
-			// 			$('#dl-subscribe').before(keyDiv);
+						$('#dl-subscribe').before(keyDiv);
 					
-			// 			$('#dl-pw-form-group').hide();
-			// 			$('#dl-subscribe').show();
+						$('#dl-pw-form-group').hide();
+						$('#dl-subscribe').show();
 
-			// 		},
-			// 		error: () => {
-			// 			console.log("ajax generate key err");
-			// 		}
-			// 	});
-			// });
+					},
+					error: () => {
+						console.log("ajax generate key err");
+					}
+				});
+			});
 
-			// $("#dl-subscribe").click(() => {
-			// 	var data = {};
-			// 	data.symKeyId = $('#dl-symKeyId').text();
+			$("#dl-subscribe").click(() => {
+				var data = {};
+				data.symKeyId = $('#dl-symKeyId').text();
 
-			// 	$.ajax({
-			// 		type:'POST',
-			// 		data: data,
-			// 		// contentType: 'application/json',
-			// 		url: 'http://localhost:3000/subscribe',
-			// 		success: (data) => {
-			// 			// console.log('Reservation Id: ' + data);
-			// 			console.log("ajax subscribe success: " + data)
+				$.ajax({
+					type:'POST',
+					data: data,
+					// contentType: 'application/json',
+					url: 'http://localhost:3000/subscribe',
+					success: (data) => {
+						// console.log('Reservation Id: ' + data);
+						console.log("ajax subscribe success: " + data)
 						
-			// 		},
-			// 		error: () => {
-			// 			console.log("ajax subscribe err");
-			// 		}
-			// 	});
-			// });
+					},
+					error: () => {
+						console.log("ajax subscribe err");
+					}
+				});
+			});
 
 
 

@@ -1,3 +1,145 @@
+body {
+	padding-top: 112px;
+  font: 16px 'Montserrat', Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+nav.navbar.fixed-top-2 {
+	position: fixed;
+	width: 100%;
+	top:72px;
+	justify-content:left;
+	padding: 0 16px;
+	z-index: 2;
+	/*border-top: 1px solid green;*/
+
+	-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 0 8px 0 rgba(0, 0, 0, .06);;
+	-moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 0 8px 0 rgba(0, 0, 0, .06);;
+	-ms-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 0 8px 0 rgba(0, 0, 0, .06);;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 0 8px 0 rgba(0, 0, 0, .06);;
+}
+
+nav.navbar.fixed-top-2 > a {
+	color: white;
+}
+
+.main {
+}
+
+.house_listing {
+	width: 75%;
+	margin: 40px auto;
+}
+
+.house_listing .card {
+	/*background-color: #22ce8b;*/
+	border: 1px solid gray;
+	/*height: 280px;*/
+	margin-bottom: 30px;
+}
+
+.house_listing .card-title {
+	font-size: 24px;
+}
+
+.house_listing .card_content {
+	margin: 0;
+	padding: 30px;
+	height: 100%;
+}
+
+.house_listing .card .img {
+	background-image: url('/images/index_room.jpeg');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	width: 100%;
+	border: 1px solid gray;
+}
+
+
+.title {
+	font-size: 12px;
+	font-weight: 600;
+	color: gray;
+}
+
+.house_listing .card .txt_section {
+	font-size: 16px;
+	padding: 0 10px;
+}
+
+.house_listing .card .txt_item {
+	padding: 6px 0;
+}
+
+
+.item {
+	margin: 20px;
+	padding: 20px;
+	border: 1px solid lightgray;
+	/*height: 250px;*/
+}
+
+.item .btn {
+	margin: 20px 0;
+}
+
+#card2 {
+	width: 80%;
+	margin: auto;
+}
+
+
+
+.loader {
+	display:none;
+}
+
+#loader {
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #22ce8b;
+  width: 40px;
+  height: 40px;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/*********************/
+/*** btn           ***/
+/*********************/
+.btn-okdk {
+	border-radius: 0px;
+  -moz-transition: all .2s ease-in;
+  -o-transition: all .2s ease-in;
+  -webkit-transition: all .2s ease-in;
+  transition: all .2s ease-in;
+  padding: 6px 30px;
+  /*margin-top: 10px;*/
+  margin-right: 10px;
+}
+
+.btn-okdk.bg-green:hover {
+	background-color: green;
+}
+
+.btn-okdk.bg-blue:hover {
+	background-color: blue;
+}
+
+
+
 /*********************/
 /*** txt, bg color ***/
 /*********************/
@@ -25,10 +167,16 @@
   background-color: #f5a623;
 }
 
-
+.txt-green {
+	color: #22ce8b;
+}
 
 .txt-blue {
 	color: #2a74ed;
+}
+
+.txt-red {
+	color: #db4437;
 }
 
 .txt-white {
