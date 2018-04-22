@@ -7,125 +7,43 @@
   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <style type="text/css">
+
+    </style>
  	</head>
 
   <body class="bg-grey">
   	<%- include('nav') -%>
 
 	<div class="main">
-
-		<% if(typeof(houseInfo) !== 'undefined') { %>
-
 		<div class="house_listing">
 
-			<div class="card" id="card2">
+			<div class="card" id="card2" style="">
 				<div class="row card_content">
 					<div class="col-sm-5 img"></div>
 					<div class="col-sm-7">
 						<div class="txt_section">
 					    <h5 class="card-title">Demo House 1</h5>
-					    <div class="txt_item" id='reservation_code_item'>
-								<div class="title txt-blue">Your Reservation Code</div>
-								<div id="reservation_code" class="txt-blue">aa2ew1dazcxv</div>
-							</div>
-					    <div class="txt_item">
-								<div class="title">Host</div>
-								<div><%- houseInfo.host -%></div>				
-							</div>
-					    <div class="txt_item">
-								<div class="title">House Address</div>
-								<div> 4716 Ellsworth Ave, Pittsburgh, PA, 15213</div>
-							</div>
-					    <div class="txt_item">
-								<div class="title">Rate/day </div>
-								<div><%- houseInfo.dailyRate -%> KEY</div>
-							</div>
+<!-- 							<div class="row">
+								<div class="col"><img src="/images/Smart-Door-Lock.jpg" style="width:100%"></div>
+								<div class="col"> -->
+							    <div class="txt_item">
+										<div class="title">Device</div>
+										<div>Front Door Lock</div>				
+									</div>
 
-					    <button id="rent" class="btn btn-okdk bg-green txt-white">OPEN</button>
+							<div class='buttons' style="margin-top:30px">
+						    <button id="open" class="btn btn-okdk bg-blue txt-white">OPEN</button>
+						    <button id="close" class="btn btn-okdk bg-blue txt-white">CLOSE</button>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
-
-
-<!-- 			<div class="house_item bg-green">
-				<div>
-				<div>Host: <%- houseInfo.host -%></div>				
-				<div>Rate/hr: <%- houseInfo.hourlyRate -%> KEY</div>
-				<div>Rate/day: <%- houseInfo.dailyRate -%> KEY</div>
-				</div>
-			</div> -->
 		</div>
-
-		<% } %>
-
 	</div>
-
-<% if(false) { %>
-		<h5>Desktop Side</h5>
-		<div class="item d-flex">
-			<div>
-				<img src="/images/Smart-Door-Lock.jpg" style="width: 220px">
-			</div>
-			<div style="padding-left:30px">
-<!-- 				<h4>Doorlock</h4>
-				<div>Address: 0x12345678901234567890</div>
-				<div>USD: $50</div>
-				<div>ETH: 0.12536</div> -->
-				<div>Host: <%- houseInfo.host -%></div>				
-				<div>Rate/hr: <%- houseInfo.hourlyRate -%></div>
-				<div>Rate/day: <%- houseInfo.dailyRate -%></div>
-				<!-- <div>Utility Fee: <%- houseInfo.utilityFee -%></div> -->
-				<!-- <div>Cleaning Fee: <%- houseInfo.cleaningFee -%></div> -->
-
-				<a href="javascript:void(0);" id="rent" class="btn bg-green txt-white">Rent It</a>
-
-				<div id="btn-section" style="padding-top: 40px">
-		      <div id="pw-form-group" class="form-group" style="display:none">
-				    <label for="password">Enter a password to generate a key</label>
-				    <input type="text" class="form-control" id="password" name="password" placeholder="Enter password">
-						<a href="javascript:void(0);" id="generateKey" class="btn bg-green txt-white">Generate Key with Password</a>
-					</div>
-					<a href="javascript:void(0);" id="open" class="btn bg-blue txt-white" style="display:none">Open</a>
-				</div>
-			</div>
-		</div>
-
-		<h5>DoorLock Side</h5>
-		<div class="item d-flex">
-			<div>
-				<img src="/images/Smart-Door-Lock.jpg" style="width: 220px">
-			</div>
-			<div style="padding-left:30px">
-<!-- 				<h4>Doorlock</h4>
-				<div>Address: 0x12345678901234567890</div>
-				<div>USD: $50</div>
-				<div>ETH: 0.12536</div> -->
-				<div>Host: <%- houseInfo.host -%></div>
-				<div>Rate/hr: <%- houseInfo.hourlyRate -%></div>
-				<div>Rate/day: <%- houseInfo.dailyRate -%></div>
-
-
-				<div id="dl-btn-section" style="padding-top: 40px">
-		      <div id="dl-pw-form-group" class="form-group">
-				    <label for="dl-password">Enter a password to generate a key</label>
-				    <input type="text" class="form-control" id="dl-password" name="password" placeholder="Enter password provided by your host">
-						<a href="javascript:void(0);" id="dl-generateKey" class="btn bg-green txt-white">Generate Key</a>
-					</div>
-					<a href="javascript:void(0);" id="dl-subscribe" class="btn bg-blue txt-white" style="display:none">Subscribe</a>
-				</div>
-			</div>
-		</div>
-	<% } %>
-<!-- 
-	 	  <form action="/generateKey" method="post">
-	      <div class="form-group">
-			    <label for="password">Enter a password to generate a key</label>
-			    <input type="text" class="form-control" id="password" name="password" placeholder="Enter password">
-				</div>
-				<button type="submit" class="btn btn-info">Generate Key</button>
-			</form> -->
 
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js"
 		  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -135,56 +53,10 @@
 
 
 			<script type="text/javascript">
-			$(function() {
-
-				// Desktop side
-
-				$("#rent").click(() => {
-					$.ajax({
-						type:'POST',
-						data: null,
-						// contentType: 'application/json',
-						url: 'http://localhost:3000/rent',
-						success: (data) => {
-							console.log(data);
-
-						},
-						error: () => {
-							console.log("ajax rent err");
-						}
-					});
-				});
-
-				// $("#generateKey").click(() => {
-				// 	var data = {};
-				// 	data.password = $('input#password').val();
-
-				// 	$.ajax({
-				// 		type:'POST',
-				// 		data: data,
-				// 		// contentType: 'application/json',
-				// 		url: 'http://localhost:3000/generateKey',
-				// 		success: (symKeyId) => {
-				// 			// console.log('Reservation Id: ' + data);
-				// 			console.log("ajax generate key success: " + symKeyId)
-
-				// 			const keyDiv = "<div>Your Sym Key Id: <span id='symKeyId' class='txt-blue'>" + symKeyId + "</span></div>";
-
-				// 			$('#open').before(keyDiv);
-						
-				// 			$('#pw-form-group').hide();
-				// 			$('#open').show();
-
-				// 		},
-				// 		error: () => {
-				// 			console.log("ajax generate key err");
-				// 		}
-				// 	});
-				// });
 
 				$("#open").click(() => {
 					var data = {};
-					data.symKeyId = $('#symKeyId').text();
+					// data.symKeyId = $('#symKeyId').text();
 
 					$.ajax({
 						type:'POST',
@@ -193,73 +65,39 @@
 						url: 'http://localhost:3000/open',
 						success: (data) => {
 							// console.log('Reservation Id: ' + data);
-							console.log("ajax whisper post success: " + data)
-
+							console.log("whisper post 'open' success: " + data)
 							// $('#open').show();
 							// $('#rent').hide();
 						},
 						error: () => {
-							console.log("ajax whisper post err");
+							console.log("whisper post 'open' err");
 						}
 					});
 				});
 
-			});
 
-	
-			// Doorlock side
+				$("#close").click(() => {
+					var data = {};
+					// data.symKeyId = $('#symKeyId').text();
 
-			$("#dl-generateKey").click(() => {
-				var data = {};
-				data.password = $('input#dl-password').val();
-
-				$.ajax({
-					type:'POST',
-					data: data,
-					// contentType: 'application/json',
-					url: 'http://localhost:3000/generateKey',
-					success: (symKeyId) => {
-						// console.log('Reservation Id: ' + data);
-						console.log("ajax generate key success: " + symKeyId)
-
-						const keyDiv = "<div>Your Sym Key Id: <span id='dl-symKeyId' class='txt-blue'>" + symKeyId + "</span></div>";
-
-						$('#dl-subscribe').before(keyDiv);
-					
-						$('#dl-pw-form-group').hide();
-						$('#dl-subscribe').show();
-
-					},
-					error: () => {
-						console.log("ajax generate key err");
-					}
+					$.ajax({
+						type:'POST',
+						data: data,
+						// contentType: 'application/json',
+						url: 'http://localhost:3000/close',
+						success: (data) => {
+							// console.log('Reservation Id: ' + data);
+							console.log("whisper post 'close' success: " + data)
+							// $('#open').show();
+							// $('#rent').hide();
+						},
+						error: () => {
+							console.log("whisper post 'close' err");
+						}
+					});
 				});
-			});
-
-			$("#dl-subscribe").click(() => {
-				var data = {};
-				data.symKeyId = $('#dl-symKeyId').text();
-
-				$.ajax({
-					type:'POST',
-					data: data,
-					// contentType: 'application/json',
-					url: 'http://localhost:3000/subscribe',
-					success: (data) => {
-						// console.log('Reservation Id: ' + data);
-						console.log("ajax subscribe success: " + data)
-						
-					},
-					error: () => {
-						console.log("ajax subscribe err");
-					}
-				});
-			});
-
-
 
 			</script>
-
 
   </body>
 </html>

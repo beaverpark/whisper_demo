@@ -73,6 +73,13 @@ router.get('/', async (req, res, next) => {
 });
 
 
+/* GET home page. */
+router.get('/reservations', (req, res, next) => {
+
+  res.render('reservations');
+});
+
+
 // AJAX POST rent lock
 router.post('/rent', async (req, res) => {
 

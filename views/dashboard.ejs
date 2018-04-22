@@ -61,7 +61,7 @@
 							</div>
 							<div style="display:flex; margin-top:20px">
 						    <button id="rent" class="btn btn-okdk bg-green txt-white">RENT</button>
-								<div id='loader' class='loader' style=""></div>
+								<div id='loader' class='loader' style="flex-shrink:0"></div>
 								<div class='loader' style="font-size:14px;padding:0 8px">Ethereum is confirming the transaction.</div>
 							</div>
 						</div>
@@ -70,10 +70,10 @@
 			</div>
 			<% } %>
 
-      <div class="alert alert-rent bg-green txt-white" style="display:none" role="alert">
+<!--       <div class="alert alert-rent bg-green txt-white" style="display:none" role="alert">
         <div style="font-size:16px" class="rent_msg"></div>
       </div>
-
+ -->
 
 			<div class="card" id="card2" style="display:none">
 				<div class="row card_content">
@@ -204,7 +204,7 @@
 							setTimeout(function() {
 								$('#card1').hide();
 								$('#card2').show();
-							}, 1000);
+							}, 10000);
 						},
 						error: () => {
 							console.log("ajax rent err");
